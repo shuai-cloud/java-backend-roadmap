@@ -1,0 +1,74 @@
+#!/bin/bash
+#
+# demo.sh - 常用 Linux 命令演示脚本
+# Usage: bash demo.sh
+#
+
+echo "=========================================="
+echo "   Linux Basic Command Demo"
+echo "   适用于 Java 后端工程师日常操作"
+echo "=========================================="
+
+# 1. 查找占用 CPU 最高的 Java 进程
+echo ""
+echo "[1] 查找 Java 进程 PID"
+ps aux | grep java | grep -v grep
+
+# 2. 统计日志文件中 ERROR 出现的次数
+echo ""
+echo "[2] 统计 error.log 中 'ERROR' 出现次数"
+mkdir -p /tmp/demo_log
+echo "ERROR: timeout" >> /tmp/demo_log/app.log
+echo "INFO: success" >> /tmp/demo_log/app.log
+echo "ERROR: connection refused" >> /tmp/demo_log/app.log
+grep -c "ERROR" /tmp/demo_log/app.log
+
+# 3. 查看某个端口的监听状态
+echo ""
+echo "[3] 检查 8080 端口是否监听"
+ss -tlnp | grep :8080 || echo "  未发现 8080 端口"
+
+# 4. 实时查看日志尾部并过滤关键字
+echo ""
+echo "[4] 模拟 tail -f 并过滤 'OutOfMemory'"
+tail -f /dev/null &   # 后台进程，实际使用时替换为真实日志文件
+PID=$!
+kill $PID 2>/dev/null
+echo "   (演示结束)"
+
+# 5. 批量重命名文件（将 .txt 改为 .bak）
+echo ""
+echo "[5] 批量重命名 .txt -> .bak"
+touch /tmp/demo_{a,b,c}.txt
+cd /tmp
+for f in *.txt; do mv "$f" "${f%.txt}.bak"; done
+ls *.bak
+rm -f *.bak
+
+# 6. 使用 awk 提取 CSV 某一列
+echo ""
+echo "[6] 从 CSV 中提取第二列"
+echo "id,name,age" > /tmp/data.csv
+echo "1,Alice,30" >> /tmp/data.csv
+echo "2,Bob,25" >> /tmp/data.csv
+awk -F',' '{print $2}' /tmp/data.csv
+
+# 7. 查找大文件（大于 100MB）
+echo ""
+echo "[7] 查找 /var/log 下大于 10MB 的文件"
+find /var/log -type f -size +10M 2>/dev/null | head -5 || echo "  无大文件"
+
+# 8. 使用 sed 替换配置文件中的占位符
+echo ""
+echo "[8] 用 sed 替换 application.yml 中的端口"
+echo "server.port: \${PORT}" > /tmp/application.yml
+sed -i 's/\${PORT}/8080/' /tmp/application.yml
+cat /tmp/application.yml
+
+# 清理临时文件
+rm -rf /tmp/demo_log /tmp/data.csv /tmp/application.yml
+
+echo ""
+echo "=========================================="
+echo "  演示完成！更多命令请参考各子目录 README"
+echo "=========================================="
