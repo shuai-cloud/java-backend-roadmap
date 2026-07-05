@@ -1,0 +1,74 @@
+// 在 Kibana Dev Tools 中运行
+
+// 1. 创建索引
+PUT /products
+{
+  "settings": {
+    "number_of_shards": 3,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "name": { "type": "text" },
+      "price": { "type": "float" },
+      "stock": { "type": "integer" },
+      "tags": { "type": "keyword" },
+      "created_at": { "type": "date" }
+    }
+  }
+}
+
+// 2. 创建文档（指定 ID）
+PUT /products/_doc/1
+{
+  "name": "Laptop",
+  "price": 1200,
+  "stock": 50,
+  "tags": ["electronics"],
+  "created_at": "2025-01-01"
+}
+
+// 3. 创建文档（自动生成 ID）
+POST /products/_doc
+{
+  "name": "Mouse",
+  "price": 25,
+  "stock": 200,
+  "tags": ["accessories"],
+  "created_at": "2025-01-02"
+}
+
+// 4. 获取文档
+GET /products/_doc/1
+
+// 5. 更新文档（局部更新）
+POST /products/_update/1
+{
+  "doc": {
+    "price": 1150
+  }
+}
+
+// 6. 删除文档
+DELETE /products/_doc/1
+
+// 7. 批量操作
+POST /_bulk
+{"index": {"_index": "products", "_id": "2"}}
+{"name": "Keyboard", "price": 80, "stock": 100, "tags": ["accessories"], "created_at": "2025-01-03"}
+{"index": {"_index": "products", "_id": "3"}}
+{"name": "Monitor", "price": 350, "stock": 30, "tags": ["electronics"], "created_at": "2025-01-04"}
+{"delete": {"_index": "products", "_id": "1"}}
+
+// 8. 搜索
+GET /products/_search
+{
+  "query": {
+    "match": {
+      "name": "keyboard"
+    }
+  }
+}
+
+// 9. 删除索引
+DELETE /products

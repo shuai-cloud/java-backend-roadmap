@@ -1,0 +1,31 @@
+// match 查询
+POST /articles/_search
+{
+  "query": {
+    "match": {
+      "title": "elasticsearch tutorial"
+    }
+  }
+}
+
+// match_phrase 短语匹配
+POST /articles/_search
+{
+  "query": {
+    "match_phrase": {
+      "title": "elasticsearch tutorial"
+    }
+  }
+}
+
+// multi_match 多字段搜索
+POST /articles/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "elasticsearch",
+      "fields": ["title^3", "content"],
+      "type": "best_fields"
+    }
+  }
+}

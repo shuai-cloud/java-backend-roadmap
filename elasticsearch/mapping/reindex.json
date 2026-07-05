@@ -1,0 +1,23 @@
+// 重建索引：修改字段类型
+// 1. 创建新索引
+PUT /new_employees
+{
+  "mappings": {
+    "properties": {
+      "employee_id": { "type": "keyword" },
+      "salary": { "type": "integer" },  // 原来是 float，改为 integer
+      "hire_date": { "type": "date" }
+    }
+  }
+}
+
+// 2. 使用 reindex 迁移数据
+POST _reindex
+{
+  "source": { "index": "old_employees" },
+  "dest": { "index": "new_employees" }
+}
+
+// 3. 删除旧索引，创建别名
+DELETE /old_employees
+PUT /new_employees/_alias/employees

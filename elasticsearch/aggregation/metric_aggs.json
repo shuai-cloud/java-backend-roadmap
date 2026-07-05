@@ -1,0 +1,19 @@
+// 指标聚合示例
+GET /orders/_search
+{
+  "size": 0,
+  "aggs": {
+    "amount_stats": {
+      "stats": { "field": "total_amount" }
+    },
+    "unique_customers": {
+      "cardinality": { "field": "customer_id", "precision_threshold": 4000 }
+    },
+    "price_percentiles": {
+      "percentiles": {
+        "field": "total_amount",
+        "percents": [25, 50, 75, 90, 99]
+      }
+    }
+  }
+}

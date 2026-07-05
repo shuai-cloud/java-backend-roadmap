@@ -1,0 +1,27 @@
+// 创建用户
+POST /_security/user/logs_writer
+{
+  "password": "StrongPassword123!",
+  "roles": ["logs_writer_role"],
+  "full_name": "Logs Writer",
+  "metadata": { "department": "ops" }
+}
+
+// 创建角色
+POST /_security/role/logs_writer_role
+{
+  "cluster": ["monitor"],
+  "indices": [
+    {
+      "names": ["logs-*"],
+      "privileges": ["create_index", "write", "delete"],
+      "field_security": { "grant": ["*"], "except": ["credit_card"] }
+    }
+  ]
+}
+
+// 查看用户
+GET /_security/user
+
+// 查看角色
+GET /_security/role

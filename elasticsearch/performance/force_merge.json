@@ -1,0 +1,8 @@
+// 查看段信息
+GET /logs_202507/_segments
+
+// 强制合并为 1 个段（低峰期执行）
+POST /logs_202507/_forcemerge?max_num_segments=1
+
+// 查看合并后段信息
+GET /logs_202507/_segments

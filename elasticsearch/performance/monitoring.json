@@ -1,0 +1,23 @@
+// 集群健康
+GET _cluster/health
+
+// 节点统计
+GET _nodes/stats
+
+// 索引统计
+GET my_index/_stats
+
+// 热点线程
+GET _nodes/hot_threads
+
+// pending tasks
+GET _cluster/pending_tasks
+
+// 线程池状态
+GET _cat/thread_pool?v
+
+// 分片分配
+GET _cat/shards?v
+
+// 段信息
+GET my_index/_segments

@@ -1,0 +1,33 @@
+// 注册快照仓库（文件系统）
+PUT /_snapshot/my_backup
+{
+  "type": "fs",
+  "settings": {
+    "location": "/mnt/backups/es_snapshots",
+    "compress": true,
+    "max_snapshot_bytes_per_sec": "50mb",
+    "max_restore_bytes_per_sec": "50mb"
+  }
+}
+
+// 创建快照
+PUT /_snapshot/my_backup/snapshot_20250706
+{
+  "indices": "my_index,logs-*",
+  "ignore_unavailable": true,
+  "include_global_state": false
+}
+
+// 查看快照状态
+GET /_snapshot/my_backup/snapshot_20250706/_status
+
+// 恢复快照
+POST /_snapshot/my_backup/snapshot_20250706/_restore
+{
+  "indices": "my_index",
+  "rename_pattern": "(.+)",
+  "rename_replacement": "restored_$1"
+}
+
+// 删除快照
+DELETE /_snapshot/my_backup/snapshot_20250706

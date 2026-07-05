@@ -1,0 +1,23 @@
+// bool 复合查询
+POST /products/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "name": "laptop" } }
+      ],
+      "should": [
+        { "match": { "brand": "dell" } },
+        { "match": { "brand": "lenovo" } }
+      ],
+      "filter": [
+        { "range": { "price": { "gte": 800, "lte": 1500 } } },
+        { "term": { "status": "active" } }
+      ],
+      "must_not": [
+        { "term": { "condition": "refurbished" } }
+      ],
+      "minimum_should_match": 1
+    }
+  }
+}

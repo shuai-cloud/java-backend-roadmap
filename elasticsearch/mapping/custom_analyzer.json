@@ -1,0 +1,23 @@
+// 自定义分析器：用于日志分析
+PUT /logs_analyzed
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "log_analyzer": {
+          "type": "custom",
+          "tokenizer": "pattern",
+          "filter": ["lowercase", "unique"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "message": {
+        "type": "text",
+        "analyzer": "log_analyzer"
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+// 多字段映射示例
+PUT /articles
+{
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "fields": {
+          "keyword": { "type": "keyword" },
+          "english": { "type": "text", "analyzer": "english" }
+        }
+      },
+      "content": {
+        "type": "text",
+        "fields": {
+          "keyword": { "type": "keyword", "ignore_above": 512 }
+        }
+      }
+    }
+  }
+}
+
+// 使用多字段查询
+POST /articles/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "title": "elasticsearch tutorial" } }
+      ],
+      "filter": [
+        { "term": { "title.keyword": "Elasticsearch Tutorial" } }
+      ]
+    }
+  }
+}

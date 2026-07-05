@@ -1,0 +1,13 @@
+// 添加新字段
+PUT /employees/_mapping
+{
+  "properties": {
+    "phone_number": { "type": "keyword" },
+    "address": {
+      "type": "text",
+      "fields": {
+        "keyword": { "type": "keyword" }
+      }
+    }
+  }
+}

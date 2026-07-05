@@ -1,0 +1,28 @@
+// 滚动重启步骤
+
+// 步骤1: 禁用分片分配
+PUT /_cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.enable": "none"
+  }
+}
+
+// 步骤2: 执行同步刷新（可选）
+POST /_flush
+
+// 步骤3: 重启节点（在操作系统层面操作）
+
+// 步骤4: 等待节点重新加入集群
+GET /_cat/nodes
+
+// 步骤5: 重新启用分片分配
+PUT /_cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.enable": "all"
+  }
+}
+
+// 步骤6: 等待分片恢复
+GET /_cat/recovery

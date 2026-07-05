@@ -1,0 +1,20 @@
+// 批量导入前的索引设置优化
+PUT /logs_202507/_settings
+{
+  "index": {
+    "refresh_interval": "-1",
+    "number_of_replicas": 0,
+    "translog.durability": "async",
+    "translog.sync_interval": "5s"
+  }
+}
+
+// 导入完成后恢复
+PUT /logs_202507/_settings
+{
+  "index": {
+    "refresh_interval": "30s",
+    "number_of_replicas": 1
+  }
+}
+POST /logs_202507/_refresh

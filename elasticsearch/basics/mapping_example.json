@@ -1,0 +1,58 @@
+// 显式映射示例
+PUT /employees
+{
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": { "type": "keyword" }  // 多字段：既支持全文搜索又支持精确匹配
+        }
+      },
+      "age": { "type": "integer" },
+      "salary": { "type": "float" },
+      "department": { "type": "keyword" },
+      "bio": {
+        "type": "text",
+        "analyzer": "standard"
+      },
+      "hire_date": { "type": "date", "format": "yyyy-MM-dd" },
+      "skills": { "type": "keyword" },
+      "address": {
+        "properties": {           // 嵌套对象
+          "city": { "type": "keyword" },
+          "country": { "type": "keyword" }
+        }
+      }
+    }
+  }
+}
+
+// 插入数据
+PUT /employees/_doc/1
+{
+  "name": "Alice Smith",
+  "age": 30,
+  "salary": 75000,
+  "department": "Engineering",
+  "bio": "Experienced software engineer",
+  "hire_date": "2020-03-15",
+  "skills": ["Java", "Python", "AWS"],
+  "address": {
+    "city": "New York",
+    "country": "USA"
+  }
+}
+
+// 搜索（使用 name.keyword 进行精确匹配）
+GET /employees/_search
+{
+  "query": {
+    "term": {
+      "name.keyword": "Alice Smith"
+    }
+  }
+}
+
+// 清理
+DELETE /employees

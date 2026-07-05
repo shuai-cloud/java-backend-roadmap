@@ -1,0 +1,31 @@
+// 多层嵌套聚合：按年份 → 按地区 → 统计指标
+GET /orders/_search
+{
+  "size": 0,
+  "aggs": {
+    "by_year": {
+      "date_histogram": {
+        "field": "order_date",
+        "calendar_interval": "year"
+      },
+      "aggs": {
+        "by_region": {
+          "terms": {
+            "field": "region",
+            "size": 5
+          },
+          "aggs": {
+            "revenue": { "sum": { "field": "total_amount" } },
+            "avg_order": { "avg": { "field": "total_amount" } },
+            "top_product": {
+              "terms": {
+                "field": "product_name",
+                "size": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

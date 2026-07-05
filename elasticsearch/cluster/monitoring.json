@@ -1,0 +1,23 @@
+// 查看节点统计
+GET /_nodes/stats
+
+// 查看集群统计
+GET /_cluster/stats
+
+// 查看索引统计
+GET /_all/_stats
+
+// 查看热点线程
+GET /_nodes/hot_threads
+
+// 配置慢查询日志
+PUT /my_index/_settings
+{
+  "index.search.slowlog.threshold.query.warn": "5s",
+  "index.search.slowlog.threshold.query.info": "2s",
+  "index.search.slowlog.threshold.fetch.warn": "2s",
+  "index.indexing.slowlog.threshold.index.warn": "5s"
+}
+
+// 查看任务
+GET /_tasks?detailed=true&actions=*search*

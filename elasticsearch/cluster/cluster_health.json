@@ -1,0 +1,11 @@
+// 查看集群健康
+GET /_cluster/health
+
+// 查看节点信息
+GET /_cat/nodes?v
+
+// 查看分片分配
+GET /_cat/shards?v
+
+// 查看未分配分片的原因
+GET /_cluster/allocation/explain?pretty

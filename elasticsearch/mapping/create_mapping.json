@@ -1,0 +1,29 @@
+// 创建索引并定义映射
+PUT /employees
+{
+  "settings": {
+    "number_of_shards": 3,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "employee_id": { "type": "keyword" },
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": { "type": "keyword" }
+        }
+      },
+      "department": { "type": "keyword" },
+      "salary": { "type": "float" },
+      "hire_date": { "type": "date", "format": "yyyy-MM-dd" },
+      "bio": {
+        "type": "text",
+        "analyzer": "english"
+      },
+      "skills": { "type": "keyword" },
+      "location": { "type": "geo_point" }
+    }
+  }
+}

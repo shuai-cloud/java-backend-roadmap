@@ -1,0 +1,26 @@
+// 聚合前过滤
+GET /orders/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        { "range": { "order_date": { "gte": "2025-01-01" } } },
+        { "term": { "status": "completed" } }
+      ]
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "by_category": {
+      "terms": { "field": "category", "size": 10 }
+    },
+    "high_value_only": {
+      "filter": { "range": { "total_amount": { "gte": 5000 } } },
+      "aggs": {
+        "by_category": {
+          "terms": { "field": "category" }
+        }
+      }
+    }
+  }
+}

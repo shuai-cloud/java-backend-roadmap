@@ -1,0 +1,13 @@
+// 配置慢查询日志
+PUT /my_index/_settings
+{
+  "index.search.slowlog.threshold.query.warn": "10s",
+  "index.search.slowlog.threshold.query.info": "5s",
+  "index.search.slowlog.threshold.query.debug": "2s",
+  "index.search.slowlog.threshold.fetch.warn": "1s",
+  "index.indexing.slowlog.threshold.index.warn": "10s",
+  "index.indexing.slowlog.threshold.index.info": "5s"
+}
+
+// 查看慢日志（在 ES 日志文件中）
+// tail -f /var/log/elasticsearch/my_index_search_slowlog.log

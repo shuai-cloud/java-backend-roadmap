@@ -1,0 +1,39 @@
+// 测试标准分词器
+POST /_analyze
+{
+  "analyzer": "standard",
+  "text": "I love Elasticsearch!"
+}
+
+// 测试中文分词（需要安装 IK 插件）
+POST /_analyze
+{
+  "analyzer": "ik_smart",
+  "text": "我爱北京天安门"
+}
+
+// 自定义分析器
+PUT /my_analyzer_test
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_custom": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase", "stop"]
+        }
+      }
+    }
+  }
+}
+
+// 测试自定义分析器
+POST /my_analyzer_test/_analyze
+{
+  "analyzer": "my_custom",
+  "text": "The quick brown fox jumps over the lazy dog"
+}
+
+// 清理
+DELETE /my_analyzer_test

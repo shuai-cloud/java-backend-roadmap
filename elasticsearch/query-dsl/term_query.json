@@ -1,0 +1,29 @@
+// term 精确匹配
+POST /products/_search
+{
+  "query": {
+    "term": {
+      "status": "active"
+    }
+  }
+}
+
+// terms 多值匹配
+POST /products/_search
+{
+  "query": {
+    "terms": {
+      "tags": ["electronics", "computer"]
+    }
+  }
+}
+
+// exists 存在查询
+POST /products/_search
+{
+  "query": {
+    "exists": {
+      "field": "description"
+    }
+  }
+}

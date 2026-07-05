@@ -1,0 +1,26 @@
+// 桶聚合示例
+GET /orders/_search
+{
+  "size": 0,
+  "aggs": {
+    "by_category": {
+      "terms": {
+        "field": "category",
+        "size": 5,
+        "order": { "avg_amount": "desc" }
+      },
+      "aggs": {
+        "avg_amount": { "avg": { "field": "total_amount" } },
+        "order_count": { "value_count": { "field": "order_id" } }
+      }
+    },
+    "orders_by_month": {
+      "date_histogram": {
+        "field": "order_date",
+        "calendar_interval": "month",
+        "format": "yyyy-MM",
+        "min_doc_count": 1
+      }
+    }
+  }
+}
